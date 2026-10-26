@@ -173,3 +173,70 @@ search(key);
  printf("\nKey %d found at index %d\n", 
 key, pos); else 
  printf("\nKey %d not found\n", key);
+
+
+
+
+_____________________
+6.2 prns 
+
+#include <stdio.h>
+#define N 20
+#define INF 9999
+
+int c[N][N], p[N];
+
+int find(int x)
+{
+    while (p[x] != x) x = p[x];
+    return x;
+}
+
+int main()
+{
+    int n, i, j, a, b, min, e, sum, ch;
+    int v[N];
+
+    printf("Enter vertices: ");
+    scanf("%d", &n);
+
+    printf("Enter matrix:\n");
+    for (i=0;i<n;i++)
+        for (j=0;j<n;j++)
+            scanf("%d",&c[i][j]);
+
+    printf("1.Prim 2.Kruskal: ");
+    scanf("%d",&ch);
+
+    for(i=0;i<n;i++) p[i]=i, v[i]=0;
+    e=0; sum=0;
+
+    if(ch==1) v[0]=1;
+
+    while(e<n-1)
+    {
+        min=INF;
+
+        for(i=0;i<n;i++)
+            for(j=0;j<n;j++)
+                if(c[i][j]>0 && c[i][j]<min &&
+                  (ch==2 ? i<j && find(i)!=find(j)
+                         : v[i] && !v[j]))
+                    min=c[i][j],a=i,b=j;
+
+        if(min==INF) break;
+
+        printf("%d-%d : %d\n",a+1,b+1,min);
+        sum+=min; e++;
+
+        if(ch==1) v[b]=1;
+        else p[find(a)]=find(b);
+
+        c[a][b]=c[b][a]=0;
+    }
+
+    if(e==n-1) printf("MST Cost = %d\n",sum);
+    else printf("Invalid choice or disconnected graph\n");
+
+    return 0;
+}
