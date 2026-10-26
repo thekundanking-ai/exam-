@@ -98,3 +98,78 @@ void rabinKarp(char text[], char pattern[]) {
 
     return 0;
 }
+
+
+___________________________
+
+
+// Hash Function Code // 
+#include <stdio.h> 
+#include <stdlib.h> 
+#define TABLE_SIZE 10 
+int hashTable[TABLE_SIZE]; 
+// Simple modulo-based hash 
+function int hash(int key) { 
+return key % TABLE_SIZE; 
+} 
+// Initialize table with -1 (empty 
+slots) void initTable() { for 
+(int i = 0; i < TABLE_SIZE; 
+i++) hashTable[i] = -1; 
+} 
+// Insert using linear 
+probing void insert(int 
+key) { int index = 
+hash(key); 
+ int start = index; 
+ while (hashTable[index] != -1) { 
+ index = (index + 1) % TABLE_SIZE; 
+ if (index == start) { 
+printf("Hash table is full!\n"); 
+ return; 
+ } 
+ } 
+ hashTable[index] = key; 
+} 
+// Search using linear 
+probing int search(int 
+key) { int index = 
+hash(key); 
+ int start = index; 
+
+ while (hashTable[index] != 
+-1) { if (hashTable[index] 
+== key) 
+ return index; 
+ index = (index + 1) % TABLE_SIZE; 
+ if (index == start) 
+break; 
+ } 
+ return -1; 
+} 
+// Display hash table 
+void display() { 
+printf("\nHash 
+Table:\n"); 
+ for (int i = 0; i < TABLE_SIZE; i++) { 
+ if (hashTable[i] != -1) 
+ printf("%d --> %d\n", i, 
+hashTable[i]); else 
+ printf("%d --> EMPTY\n", i); 
+ } 
+} int 
+main() { 
+ initTable(); 
+ insert(5); 
+insert(15); 
+insert(25); 
+insert(35); 
+insert(95); 
+ display(); 
+ int key = 25; 
+int pos = 
+search(key); 
+ if (pos != -1) 
+ printf("\nKey %d found at index %d\n", 
+key, pos); else 
+ printf("\nKey %d not found\n", key);
