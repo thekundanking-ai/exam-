@@ -240,3 +240,84 @@ int main()
 
     return 0;
 }
+
+
+
+
+
+_____________
+ 6.1 job 
+
+#include <stdio.h>
+
+struct Job
+{
+    int id;
+    int deadline;
+    int profit;
+};
+
+int main()
+{
+    struct Job job[20], temp;
+    int n, i, j, max = 0;
+    int slot[20] = {0};
+    int totalProfit = 0;
+
+    printf("Enter number of jobs: ");
+    scanf("%d", &n);
+
+    for (i = 0; i < n; i++)
+    {
+        job[i].id = i + 1;
+
+        printf("Enter deadline and profit for Job %d: ", i + 1);
+        scanf("%d %d", &job[i].deadline,
+              &job[i].profit);
+
+        if (job[i].deadline > max)
+            max = job[i].deadline;
+    }
+
+    /* Sort jobs by profit in descending order */
+    for (i = 0; i < n - 1; i++)
+    {
+        for (j = 0; j < n - i - 1; j++)
+        {
+            if (job[j].profit < job[j + 1].profit)
+            {
+                temp = job[j];
+                job[j] = job[j + 1];
+                job[j + 1] = temp;
+            }
+        }
+    }
+
+    if (max > n)
+        max = n;
+
+    /* Schedule jobs in available slots */
+    for (i = 0; i < n; i++)
+    {
+        for (j = job[i].deadline - 1; j >= 0; j--)
+        {
+            if (j < max && slot[j] == 0)
+            {
+                slot[j] = job[i].id;
+                totalProfit += job[i].profit;
+                break;
+            }
+        }
+    }
+
+    printf("\nSelected Jobs: ");
+    for (i = 0; i < max; i++)
+    {
+        if (slot[i] != 0)
+            printf("J%d ", slot[i]);
+    }
+
+    printf("\nMaximum Profit = %d\n", totalProfit);
+
+    return 0;
+}
